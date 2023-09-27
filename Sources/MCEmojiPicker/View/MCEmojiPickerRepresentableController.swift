@@ -98,7 +98,7 @@ public struct MCEmojiPickerRepresentableController: UIViewControllerRepresentabl
     }
     
     public func makeUIViewController(context: Context) -> UIViewController {
-        UIViewController()
+        MCViewController()
     }
     
     public func updateUIViewController(_ representableController: UIViewController, context: Context) {
