@@ -67,8 +67,24 @@ final class MCUnicodeManager: MCUnicodeManagerProtocol {
     // MARK: - Private Methods
 
     /// Returns the top n (`maxFrequentlyUsedEmojis`) emojis by usage, for emojis with a `usageCount` > 0.
+//    private func getFrequentlyUsedEmojis() -> [MCEmoji] {
+//        Array(
+//            defaultEmojis
+//                .flatMap({ $0.emojis })
+//                .filter({ $0.usageCount > 0 })
+//                .sorted(by: { lhs, rhs in
+//                    let (aUsage, bUsage) = (lhs.usage, rhs.usage)
+//                    guard aUsage.count != bUsage.count else {
+//                        // Break ties with most recent usage
+//                        return lhs.lastUsage > rhs.lastUsage
+//                    }
+//                    return aUsage.count > bUsage.count
+//                })
+//                .prefix(maxFrequentlyUsedEmojisCount)
+//        )
+//    }
     private func getFrequentlyUsedEmojis() -> [MCEmoji] {
-        Array(
+        var emojis = Array(
             defaultEmojis
                 .flatMap({ $0.emojis })
                 .filter({ $0.usageCount > 0 })
@@ -82,6 +98,18 @@ final class MCUnicodeManager: MCUnicodeManagerProtocol {
                 })
                 .prefix(maxFrequentlyUsedEmojisCount)
         )
+        
+        if !emojis.contains(where: { $0.emojiKeys == [0x1F1E8, 0x1F1F3] }) {
+            let flagChina = MCEmoji(
+                emojiKeys: [0x1F1E8, 0x1F1F3],
+                isSkinToneSupport: false,
+                searchKey: "flagChina",
+                version: 0.6
+            )
+            emojis.insert(flagChina, at: 0)
+        }
+        
+        return emojis
     }
 
     // MARK: - Private Properties
